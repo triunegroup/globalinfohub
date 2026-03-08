@@ -40,16 +40,23 @@ export async function GET(req: NextRequest) {
         if (match) imageUrl = match[1]
       }
 
-      const link = typeof item.link === 'string' ? item.link
-        : (item.link as Record<string, string>)?._
-        || (Array.isArray(item.link) ? (item.link[0] as Record<string, string>)?.$ ?.href : undefined)
+      const linkRaw = item.link
+      const link = typeof linkRaw === 'string' ? linkRaw
+        : (linkRaw as Record<string, string>)?._
+        || (Array.isArray(linkRaw) ? ((linkRaw[0] as Record<string, Record<string, string>>)?.$ )?.href : undefined)
         || ''
 
+      const asStr = (v: unknown): string => {
+        if (typeof v === 'string') return v
+        if (v && typeof v === 'object') return (v as Record<string, string>)._ || ''
+        return ''
+      }
+
       return {
-        title: item.title?._ || item.title || '',
+        title: asStr(item.title),
         link,
-        description: item.description?._ || item.description || item.summary?._ || item.summary || '',
-        pubDate: item.pubDate || item.updated || item.published || new Date().toISOString(),
+        description: asStr(item.description) || asStr(item.summary),
+        pubDate: (item.pubDate || item.updated || item.published || new Date().toISOString()) as string,
         imageUrl: imageUrl || null,
       }
     })
