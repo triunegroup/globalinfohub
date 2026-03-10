@@ -210,12 +210,13 @@ export const RSS_FEEDS: Record<string, Record<string, { name: string; url: strin
   },
 }
 
-// YouTube is the official free global distribution channel for these 24/7 live news streams.
-// If a stream ID goes stale, the liveUrl fallback lets users click straight to the channel's site.
+// channelHandle is used by /api/livestream to dynamically resolve the current live stream ID.
+// embedUrl is the static fallback used if dynamic resolution fails.
 export const VIDEO_FEEDS = [
   {
     id: 'bloomberg',
     title: 'Bloomberg Markets Live',
+    channelHandle: '@BloombergTV',
     embedUrl: 'https://www.youtube.com/embed/dp8PhLsUcFE',
     source: 'Bloomberg',
     liveUrl: 'https://www.bloomberg.com/live',
@@ -223,6 +224,7 @@ export const VIDEO_FEEDS = [
   {
     id: 'bbc-news',
     title: 'BBC News Live',
+    channelHandle: '@BBCNews',
     embedUrl: 'https://www.youtube.com/embed/w_Ma8oQLmSM',
     source: 'BBC News',
     liveUrl: 'https://www.bbc.com/news/av/live/c702600',
@@ -230,6 +232,7 @@ export const VIDEO_FEEDS = [
   {
     id: 'al-jazeera',
     title: 'Al Jazeera English',
+    channelHandle: '@AlJazeeraEnglish',
     embedUrl: 'https://www.youtube.com/embed/Z_1Q0LLDVEE',
     source: 'Al Jazeera',
     liveUrl: 'https://www.aljazeera.com/live',
@@ -237,6 +240,7 @@ export const VIDEO_FEEDS = [
   {
     id: 'sky-news',
     title: 'Sky News Live',
+    channelHandle: '@SkyNews',
     embedUrl: 'https://www.youtube.com/embed/9Auq9mYxFEE',
     source: 'Sky News',
     liveUrl: 'https://news.sky.com/watch-live',
@@ -244,6 +248,7 @@ export const VIDEO_FEEDS = [
   {
     id: 'abc-news',
     title: 'ABC News Live',
+    channelHandle: '@ABCNews',
     embedUrl: 'https://www.youtube.com/embed/w_ISAA3Gn1E',
     source: 'ABC News',
     liveUrl: 'https://abcnews.go.com/Live',
@@ -251,6 +256,7 @@ export const VIDEO_FEEDS = [
   {
     id: 'france24',
     title: 'France 24 English',
+    channelHandle: '@FRANCE24English',
     embedUrl: 'https://www.youtube.com/embed/l8PMl7tUy_E',
     source: 'France 24',
     liveUrl: 'https://www.france24.com/en/live-news/',
@@ -258,6 +264,7 @@ export const VIDEO_FEEDS = [
   {
     id: 'dw-news',
     title: 'DW News',
+    channelHandle: '@dwnews',
     embedUrl: 'https://www.youtube.com/embed/ZvFHEBNMzDM',
     source: 'Deutsche Welle',
     liveUrl: 'https://www.dw.com/en/live-tv/s-100825',

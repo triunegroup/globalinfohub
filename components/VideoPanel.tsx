@@ -1,11 +1,42 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { VIDEO_FEEDS } from '@/lib/feeds'
-import { Tv, ChevronDown, ExternalLink } from 'lucide-react'
+import { Tv, ChevronDown, ExternalLink, Loader2 } from 'lucide-react'
 
 export default function VideoPanel() {
   const [active, setActive] = useState(VIDEO_FEEDS[0])
   const [open, setOpen] = useState(true)
+  // Cache of resolved live video IDs: channelId -> videoId
+  const [resolvedIds, setResolvedIds] = useState<Record<string, string>>({})
+  const [resolving, setResolving] = useState(false)
+  const resolveAttempted = useRef<Set<string>>(new Set())
+
+  // Resolve the current live stream ID for a channel (once per session per channel)
+  async function resolveId(channel: typeof VIDEO_FEEDS[0]) {
+    if (resolveAttempted.current.has(channel.id)) return
+    resolveAttempted.current.add(channel.id)
+
+    setResolving(true)
+    try {
+      const res = await fetch(`/api/livestream?handle=${encodeURIComponent(channel.channelHandle)}`)
+      const data = await res.json()
+      if (data.videoId) {
+        setResolvedIds(prev => ({ ...prev, [channel.id]: data.videoId }))
+      }
+    } catch {
+      // Silently fall back to static embedUrl
+    } finally {
+      setResolving(false)
+    }
+  }
+
+  // Resolve on mount (for default channel) and whenever active channel changes
+  useEffect(() => { resolveId(active) }, [active.id])
+
+  const videoId = resolvedIds[active.id]
+  const embedUrl = videoId
+    ? `https://www.youtube.com/embed/${videoId}?autoplay=0`
+    : active.embedUrl
 
   return (
     <div className="card mb-4">
@@ -38,9 +69,14 @@ export default function VideoPanel() {
 
           {/* Video embed */}
           <div className="relative w-full rounded-lg overflow-hidden bg-black" style={{ aspectRatio: '16/9', maxHeight: '260px' }}>
+            {resolving && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-10">
+                <Loader2 size={24} className="text-slate-400 animate-spin" />
+              </div>
+            )}
             <iframe
-              key={active.id}
-              src={active.embedUrl}
+              key={embedUrl}
+              src={embedUrl}
               title={active.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -48,10 +84,10 @@ export default function VideoPanel() {
             />
           </div>
 
-          {/* Footer: attribution + fallback link */}
+          {/* Footer */}
           <div className="flex items-center justify-between mt-2">
             <p className="text-xs text-slate-600">
-              Live stream via YouTube · GlobalInfoHub does not own this content.
+              {videoId ? 'Live stream resolved dynamically' : 'Using cached stream ID'} · YouTube
             </p>
             <a
               href={active.liveUrl}

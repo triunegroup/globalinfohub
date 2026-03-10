@@ -21,8 +21,10 @@ export interface StockData {
 export interface VideoFeed {
   id: string
   title: string
-  embedUrl: string
+  embedUrl: string   // static fallback ID — used if dynamic resolution fails
+  channelHandle: string  // YouTube @handle — used to resolve the current live stream ID
   source: string
+  liveUrl: string    // channel's own website — shown as fallback link
 }
 
 export type Region = 'americas' | 'european' | 'asian' | 'african'
