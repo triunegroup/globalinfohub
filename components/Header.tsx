@@ -74,7 +74,7 @@ export default function Header() {
   return (
     <div className="relative z-50">
       <header style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}
-        className="px-4 py-3 flex items-center gap-4">
+        className="pl-12 pr-4 md:px-4 py-3 flex items-center gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0 hover:opacity-80 transition-opacity">
           <Globe className="text-blue-400" size={22} />
@@ -105,7 +105,7 @@ export default function Header() {
         </form>
 
         {/* Live indicator */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
           <span className="text-xs text-slate-400">Live</span>
         </div>
