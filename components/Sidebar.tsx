@@ -14,7 +14,7 @@ const NAV = [
   },
   {
     label: 'Global News', icon: Globe, href: '/global-news',
-    sub: ['The Americas', 'European', 'Asian', 'African'],
+    sub: ['The Americas', 'European', 'Asian', 'African', 'Caribbean'],
   },
   {
     label: 'Global Markets', icon: TrendingUp, href: '/markets',
@@ -22,11 +22,11 @@ const NAV = [
   },
   {
     label: 'Global Sports', icon: Trophy, href: '/sports',
-    sub: ['Soccer', 'Cricket', 'Hockey', 'Basketball', 'NFL', 'Tennis', 'Table Tennis', 'Track & Field'],
+    sub: ['Global Events', 'Soccer', 'Cricket', 'Basketball', 'NFL', 'Hockey', 'Tennis', 'Table Tennis', 'Track & Field'],
   },
   {
     label: 'Real Estate', icon: Building2, href: '/real-estate',
-    sub: ['The Americas', 'European', 'Asian'],
+    sub: ['US Markets', 'Canada', 'Caribbean', 'Mortgage'],
   },
 ]
 

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
+import Link from 'next/link'
 import { Search, X, TrendingUp, Globe, ExternalLink } from 'lucide-react'
 
 interface SearchResult {
@@ -75,10 +76,10 @@ export default function Header() {
       <header style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}
         className="px-4 py-3 flex items-center gap-4">
         {/* Logo */}
-        <div className="flex items-center gap-2 shrink-0">
+        <Link href="/" className="flex items-center gap-2 shrink-0 hover:opacity-80 transition-opacity">
           <Globe className="text-blue-400" size={22} />
           <span className="font-bold text-white text-lg tracking-tight">GlobalInfoHub</span>
-        </div>
+        </Link>
 
         {/* Search */}
         <form onSubmit={handleSearch} className="flex-1 max-w-2xl mx-auto relative">
