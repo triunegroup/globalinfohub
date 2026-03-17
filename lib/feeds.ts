@@ -210,6 +210,14 @@ export const RSS_FEEDS: Record<string, Record<string, { name: string; url: strin
   },
 }
 
+export const CRYPTO_FEEDS: { name: string; url: string; siteUrl: string }[] = [
+  { name: 'CoinDesk',         url: 'https://www.coindesk.com/arc/outboundfeeds/rss/',  siteUrl: 'https://www.coindesk.com' },
+  { name: 'Cointelegraph',    url: 'https://cointelegraph.com/rss',                    siteUrl: 'https://cointelegraph.com' },
+  { name: 'Decrypt',          url: 'https://decrypt.co/feed',                          siteUrl: 'https://decrypt.co' },
+  { name: 'Bitcoin Magazine',  url: 'https://bitcoinmagazine.com/.rss/full/',           siteUrl: 'https://bitcoinmagazine.com' },
+  { name: 'The Block',        url: 'https://www.theblock.co/rss.xml',                  siteUrl: 'https://www.theblock.co' },
+]
+
 // channelHandle is used by /api/livestream to dynamically resolve the current live stream ID.
 // embedUrl is the static fallback used if dynamic resolution fails.
 export const VIDEO_FEEDS = [
