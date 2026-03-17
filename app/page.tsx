@@ -1,5 +1,6 @@
 import VideoPanel from '@/components/VideoPanel'
 import FeedSection from '@/components/FeedSection'
+import BreakingNews from '@/components/BreakingNews'
 import { RSS_FEEDS } from '@/lib/feeds'
 import { TrendingUp, Globe, Monitor, Trophy, Building2, Bitcoin, Cloud, ExternalLink } from 'lucide-react'
 
@@ -44,6 +45,8 @@ export default function Home() {
           </a>
         ))}
       </div>
+
+      <BreakingNews />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         {/* Left: Video + quick links */}

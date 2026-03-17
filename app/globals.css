@@ -36,3 +36,15 @@ body {
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: #2a3550; border-radius: 2px; }
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker-scroll 90s linear infinite;
+  will-change: transform;
+}
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
