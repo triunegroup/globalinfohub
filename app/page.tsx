@@ -2,7 +2,7 @@ import VideoPanel from '@/components/VideoPanel'
 import FeedSection from '@/components/FeedSection'
 import BreakingNews from '@/components/BreakingNews'
 import { RSS_FEEDS } from '@/lib/feeds'
-import { TrendingUp, Globe, Monitor, Trophy, Building2, Bitcoin, Cloud, ExternalLink } from 'lucide-react'
+import { TrendingUp, Globe, Monitor, Trophy, Building2, Bitcoin, Cloud, BookOpen, ExternalLink } from 'lucide-react'
 
 const QUICK_LINKS = [
   { label: 'Bloomberg', url: 'https://www.bloomberg.com', desc: 'Markets & Finance' },
@@ -23,6 +23,7 @@ const STAT_CARDS = [
   { label: 'Real Estate', icon: Building2,   href: '/real-estate', color: 'text-orange-400' },
   { label: 'Crypto',      icon: Bitcoin,     href: '/crypto',      color: 'text-yellow-500' },
   { label: 'Weather',     icon: Cloud,       href: '/weather',     color: 'text-sky-400'    },
+  { label: 'Blog',        icon: BookOpen,    href: '/blog',        color: 'text-pink-400'   },
 ]
 
 export default function Home() {
@@ -36,7 +37,7 @@ export default function Home() {
   return (
     <div className="space-y-5">
       {/* Category nav cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
         {STAT_CARDS.map(({ label, icon: Icon, href, color }) => (
           <a key={href} href={href}
             className="card flex flex-col items-center gap-2 py-4 hover:border-blue-500/40 transition-all group text-center">

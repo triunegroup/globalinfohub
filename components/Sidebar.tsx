@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
-  Monitor, Globe, TrendingUp, Trophy, Building2, Cloud, Bitcoin,
+  Monitor, Globe, TrendingUp, Trophy, Building2, Cloud, Bitcoin, BookOpen,
   ChevronRight, ChevronDown, Menu, X,
 } from 'lucide-react'
 
@@ -30,6 +30,10 @@ const NAV = [
   },
   {
     label: 'Crypto', icon: Bitcoin, href: '/crypto',
+    sub: [],
+  },
+  {
+    label: 'Blog', icon: BookOpen, href: '/blog',
     sub: [],
   },
   {
