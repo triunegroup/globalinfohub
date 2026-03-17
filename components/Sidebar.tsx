@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
-  Monitor, Globe, TrendingUp, Trophy, Building2,
+  Monitor, Globe, TrendingUp, Trophy, Building2, Cloud,
   ChevronRight, ChevronDown, Menu, X,
 } from 'lucide-react'
 
@@ -27,6 +27,10 @@ const NAV = [
   {
     label: 'Real Estate', icon: Building2, href: '/real-estate',
     sub: ['US Markets', 'Canada', 'Caribbean', 'Mortgage'],
+  },
+  {
+    label: 'Weather', icon: Cloud, href: '/weather',
+    sub: [],
   },
 ]
 
@@ -55,12 +59,14 @@ function NavItems({
                 <Icon size={16} />
                 <span>{label}</span>
               </Link>
-              <button onClick={() => toggle(label)} className="p-1.5 text-slate-500 hover:text-slate-300">
-                {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-              </button>
+              {sub.length > 0 && (
+                <button onClick={() => toggle(label)} className="p-1.5 text-slate-500 hover:text-slate-300">
+                  {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </button>
+              )}
             </div>
 
-            {open && (
+            {open && sub.length > 0 && (
               <div className="ml-6 mt-0.5 space-y-0.5">
                 {sub.map(s => (
                   <Link key={s}

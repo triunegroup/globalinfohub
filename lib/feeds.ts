@@ -214,14 +214,6 @@ export const RSS_FEEDS: Record<string, Record<string, { name: string; url: strin
 // embedUrl is the static fallback used if dynamic resolution fails.
 export const VIDEO_FEEDS = [
   {
-    id: 'bloomberg',
-    title: 'Bloomberg Markets Live',
-    channelHandle: '@BloombergTV',
-    embedUrl: 'https://www.youtube.com/embed/dp8PhLsUcFE',
-    source: 'Bloomberg',
-    liveUrl: 'https://www.bloomberg.com/live',
-  },
-  {
     id: 'bbc-news',
     title: 'BBC News Live',
     channelHandle: '@BBCNews',
@@ -236,6 +228,14 @@ export const VIDEO_FEEDS = [
     embedUrl: 'https://www.youtube.com/embed/Z_1Q0LLDVEE',
     source: 'Al Jazeera',
     liveUrl: 'https://www.aljazeera.com/live',
+  },
+  {
+    id: 'bloomberg',
+    title: 'Bloomberg Markets Live',
+    channelHandle: '@BloombergTV',
+    embedUrl: 'https://www.youtube.com/embed/dp8PhLsUcFE',
+    source: 'Bloomberg',
+    liveUrl: 'https://www.bloomberg.com/live',
   },
   {
     id: 'sky-news',
