@@ -30,11 +30,67 @@ interface SearchResult {
 
 const STOCK_PATTERN = /^[A-Z]{1,5}(\.[A-Z]{1,2})?$/
 
+const CATEGORIES = [
+  { id: 'all',          label: 'All',         keyword: '',                  href: null },
+  { id: 'technology',   label: 'Technology',  keyword: 'technology news',   href: '/technology' },
+  { id: 'global-news',  label: 'Global News', keyword: 'world news',        href: '/global-news' },
+  { id: 'markets',      label: 'Markets',     keyword: 'financial markets', href: '/markets' },
+  { id: 'sports',       label: 'Sports',      keyword: 'sports news',       href: '/sports' },
+  { id: 'crypto',       label: 'Crypto',      keyword: 'cryptocurrency',    href: '/crypto' },
+  { id: 'real-estate',  label: 'Real Estate', keyword: 'real estate news',  href: '/real-estate' },
+  { id: 'weather',      label: 'Weather',     keyword: 'weather forecast',  href: '/weather' },
+]
+
+const CATEGORY_SOURCES: Record<string, { name: string; url: string }[]> = {
+  technology: [
+    { name: 'TechCrunch',  url: 'https://techcrunch.com' },
+    { name: 'Wired',       url: 'https://www.wired.com' },
+    { name: 'Ars Technica',url: 'https://arstechnica.com' },
+    { name: 'The Verge',   url: 'https://www.theverge.com' },
+  ],
+  'global-news': [
+    { name: 'BBC News',    url: 'https://www.bbc.com/news' },
+    { name: 'Reuters',     url: 'https://www.reuters.com' },
+    { name: 'Al Jazeera', url: 'https://www.aljazeera.com' },
+    { name: 'The Guardian',url: 'https://www.theguardian.com' },
+  ],
+  markets: [
+    { name: 'Bloomberg',   url: 'https://www.bloomberg.com' },
+    { name: 'Yahoo Finance',url: 'https://finance.yahoo.com' },
+    { name: 'CNBC',        url: 'https://www.cnbc.com' },
+    { name: 'MarketWatch', url: 'https://www.marketwatch.com' },
+  ],
+  sports: [
+    { name: 'ESPN',        url: 'https://www.espn.com' },
+    { name: 'BBC Sport',   url: 'https://www.bbc.com/sport' },
+    { name: 'Sky Sports',  url: 'https://www.skysports.com' },
+    { name: 'The Athletic',url: 'https://theathletic.com' },
+  ],
+  crypto: [
+    { name: 'CoinDesk',      url: 'https://www.coindesk.com' },
+    { name: 'Cointelegraph', url: 'https://cointelegraph.com' },
+    { name: 'Decrypt',       url: 'https://decrypt.co' },
+    { name: 'The Block',     url: 'https://www.theblock.co' },
+  ],
+  'real-estate': [
+    { name: 'Realtor.com', url: 'https://www.realtor.com' },
+    { name: 'Zillow',      url: 'https://www.zillow.com' },
+    { name: 'HousingWire', url: 'https://www.housingwire.com' },
+    { name: 'Redfin',      url: 'https://www.redfin.com' },
+  ],
+  weather: [
+    { name: 'Weather.com',      url: 'https://www.weather.com' },
+    { name: 'AccuWeather',      url: 'https://www.accuweather.com' },
+    { name: 'Weather Underground', url: 'https://www.wunderground.com' },
+  ],
+}
+
 export default function Header() {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<SearchResult | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [showPanel, setShowPanel] = useState(false)
+  const [query, setQuery]                 = useState('')
+  const [results, setResults]             = useState<SearchResult | null>(null)
+  const [loading, setLoading]             = useState(false)
+  const [showPanel, setShowPanel]         = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const isStockQuery = (q: string) => STOCK_PATTERN.test(q.trim().toUpperCase())
@@ -53,7 +109,9 @@ export default function Header() {
         const data = await res.json()
         setResults({ query: q, ...data })
       } else {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`)
+        const cat = CATEGORIES.find(c => c.id === selectedCategory)
+        const scopedQ = cat?.keyword ? `${q} ${cat.keyword}` : q
+        const res = await fetch(`/api/search?q=${encodeURIComponent(scopedQ)}`)
         const data = await res.json()
         setResults({ query: q, ...data })
       }
@@ -75,6 +133,7 @@ export default function Header() {
     <div className="relative z-50">
       <header style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}
         className="pl-12 pr-4 md:px-4 py-3 flex items-center gap-4">
+
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0 hover:opacity-80 transition-opacity">
           <Globe className="text-blue-400" size={22} />
@@ -84,12 +143,27 @@ export default function Header() {
         {/* Search */}
         <form onSubmit={handleSearch} className="flex-1 max-w-2xl mx-auto relative">
           <div className="flex items-center gap-2" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '0.75rem' }}>
-            <Search size={16} className="ml-3 text-slate-400 shrink-0" />
+
+            {/* Category selector */}
+            <select
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+              className="ml-3 text-xs text-slate-400 bg-transparent outline-none cursor-pointer border-r pr-2 shrink-0"
+              style={{ borderColor: 'var(--border)' }}
+            >
+              {CATEGORIES.map(c => (
+                <option key={c.id} value={c.id} style={{ backgroundColor: '#1a2235' }}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+
+            <Search size={14} className="text-slate-500 shrink-0" />
             <input
               ref={inputRef}
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder='Search news, stocks (NVDA), or ask anything...'
+              placeholder="Search news, stocks (NVDA), or ask anything..."
               className="flex-1 bg-transparent py-2 pr-2 text-sm text-white placeholder-slate-500 outline-none"
             />
             {query && (
@@ -121,6 +195,11 @@ export default function Header() {
               <span className="text-sm font-medium text-white">
                 {isStock ? 'Stock Quote' : 'Search Results'}: <span className="text-blue-400">{results?.query}</span>
               </span>
+              {!isStock && selectedCategory !== 'all' && (
+                <span className="px-2 py-0.5 text-xs rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30">
+                  {CATEGORIES.find(c => c.id === selectedCategory)?.label}
+                </span>
+              )}
             </div>
             <button onClick={clear} className="text-slate-400 hover:text-white"><X size={16} /></button>
           </div>
@@ -131,7 +210,7 @@ export default function Header() {
             ) : isStock && results ? (
               <StockPanel data={results} />
             ) : results ? (
-              <SearchPanel data={results} />
+              <SearchPanel data={results} selectedCategory={selectedCategory} />
             ) : null}
           </div>
         </div>
@@ -196,7 +275,12 @@ function StockPanel({ data }: { data: SearchResult }) {
   )
 }
 
-function SearchPanel({ data }: { data: SearchResult }) {
+function SearchPanel({ data, selectedCategory }: { data: SearchResult; selectedCategory: string }) {
+  const cat = CATEGORIES.find(c => c.id === selectedCategory)
+  const scopedQ = cat?.keyword ? `${data.query} ${cat.keyword}` : data.query
+  const enc = encodeURIComponent(scopedQ)
+  const sources = selectedCategory !== 'all' ? (CATEGORY_SOURCES[selectedCategory] ?? []) : []
+
   return (
     <div>
       {data.answer && (
@@ -211,11 +295,22 @@ function SearchPanel({ data }: { data: SearchResult }) {
         </div>
       )}
 
+      {/* Browse on GlobalInfoHub shortcut */}
+      {cat?.href && (
+        <Link href={cat.href}
+          className="flex items-center justify-between w-full mb-4 p-3 rounded-lg hover:bg-blue-600/10 transition-colors"
+          style={{ border: '1px solid var(--border)' }}>
+          <span className="text-sm text-blue-400 font-medium">Browse {cat.label} on GlobalInfoHub</span>
+          <ExternalLink size={13} className="text-blue-400" />
+        </Link>
+      )}
+
+      {/* External search links */}
       <div className="flex gap-2 flex-wrap mb-4">
         {[
-          { label: 'DuckDuckGo', url: data.searchUrl },
-          { label: 'Google', url: data.googleUrl },
-          { label: 'Google News', url: data.newsUrl },
+          { label: 'DuckDuckGo', url: `https://duckduckgo.com/?q=${enc}` },
+          { label: 'Google',     url: `https://www.google.com/search?q=${enc}` },
+          { label: 'Google News',url: `https://news.google.com/search?q=${enc}` },
         ].map(({ label, url }) => (
           <a key={label} href={url} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-3 py-1.5 text-xs bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:text-blue-300 rounded-lg transition-colors">
@@ -224,6 +319,27 @@ function SearchPanel({ data }: { data: SearchResult }) {
         ))}
       </div>
 
+      {/* Category source quick links */}
+      {sources.length > 0 && (
+        <div className="mb-4">
+          <div className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+            {cat?.label} Sources
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {sources.map(s => (
+              <a key={s.name}
+                href={`https://www.google.com/search?q=${encodeURIComponent(data.query)}+site:${new URL(s.url).hostname}`}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg text-slate-300 hover:text-white transition-colors"
+                style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+                {s.name} <ExternalLink size={10} className="text-slate-500" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Related topics */}
       {data.relatedTopics?.length > 0 && (
         <div>
           <div className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">Related</div>
