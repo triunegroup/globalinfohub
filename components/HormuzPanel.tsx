@@ -2,10 +2,10 @@
 import { useState } from 'react'
 import { Ship, ChevronDown, ExternalLink } from 'lucide-react'
 
-// VesselFinder free embed — near real-time AIS ship tracking data (~5 min delay)
+// VesselFinder free AIS widget — near real-time ship tracking (~5 min delay)
 // Centered on Strait of Hormuz: 26.4°N, 56.3°E, zoom 8
 const EMBED_URL =
-  'https://www.vesselfinder.com/embed?lat=26.4&lon=56.3&zoom=8&names=true&track=&base=0&shadw=true'
+  'https://www.vesselfinder.com/aismap?zoom=8&lat=26.4&lon=56.3&width=800&height=400&names=false&mmsi=&track=&base=0&shadw=true&bgclr=0f172a&bgclra=FF&brdrclr=1e293b&usrclr=22d3ee&slctrngclr=22d3ee'
 
 const FULLSCREEN_URL =
   'https://www.vesselfinder.com/?minlat=24.5&minlon=54.5&maxlat=27.5&maxlon=59.5'
