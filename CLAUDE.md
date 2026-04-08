@@ -70,6 +70,8 @@ All routes are no-auth, server-side only. Cache strategy noted per route.
 
 **`components/MarketHeatmap.tsx`** — TradingView S&P 500 embed.
 
+**`components/HormuzPanel.tsx`** — Collapsible panel showing near real-time vessel traffic through the Strait of Hormuz. Embeds a VesselFinder iframe (free, no API key needed) centered at 26.4°N 56.3°E, zoom 8. AIS data is ~5 min delayed. Placed on the home page in column 2 of a 4-col grid, directly beside VideoPanel. "Full map" link opens the full VesselFinder view scoped to the strait bounding box. Added as a temporary feature during the Iran/Hormuz conflict period.
+
 ---
 
 ## Pages

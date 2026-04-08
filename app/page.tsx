@@ -1,4 +1,5 @@
 import VideoPanel from '@/components/VideoPanel'
+import HormuzPanel from '@/components/HormuzPanel'
 import FeedSection from '@/components/FeedSection'
 import BreakingNews from '@/components/BreakingNews'
 import { RSS_FEEDS } from '@/lib/feeds'
@@ -49,8 +50,8 @@ export default function Home() {
 
       <BreakingNews />
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
-        {/* Left: Video + quick links */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-5">
+        {/* Col 1: Video + quick links */}
         <div className="xl:col-span-1">
           <VideoPanel />
 
@@ -73,7 +74,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right: Top headlines */}
+        {/* Col 2: Strait of Hormuz vessel traffic */}
+        <div className="xl:col-span-1">
+          <HormuzPanel />
+        </div>
+
+        {/* Col 3-4: Top headlines */}
         <div className="xl:col-span-2">
           <h2 className="text-base font-semibold text-white mb-3 flex items-center gap-2">
             <Globe size={16} className="text-blue-400" /> Top Headlines
